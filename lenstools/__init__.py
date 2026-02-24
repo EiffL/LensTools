@@ -24,7 +24,8 @@ from .pipeline.simulation import SimulationBatch
 
 from .legacy import index
 
-import os,pkg_resources
+import os
+from importlib import resources as _importlib_resources
 
 if sys.version_info.major>=3:
 	from urllib import request
@@ -42,8 +43,8 @@ if data_directory is None:
 def data(name=None):
 
 	if name is not None:
-		
-		full_path = pkg_resources.resource_filename("lenstools",os.path.join("data",name))
+
+		full_path = str(_importlib_resources.files("lenstools").joinpath("data",name))
 		if os.path.isfile(full_path):
 			return full_path
 		else:
@@ -52,7 +53,7 @@ def data(name=None):
 	else:
 
 		#If no name provided just list all available resources
-		full_path = pkg_resources.resource_filename("lenstools","data")
+		full_path = str(_importlib_resources.files("lenstools").joinpath("data"))
 		return os.listdir(full_path)
 
 
